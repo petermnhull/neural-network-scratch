@@ -19,3 +19,7 @@ poetryinstall:
 fmt:
 	ruff check . --fix
 	ruff format . 
+
+test:
+	coverage run --source neural_network_scratch/ -m pytest tests/
+	coverage report
