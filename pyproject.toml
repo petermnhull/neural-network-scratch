@@ -7,13 +7,17 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-ipykernel = "^6.29.2"
 numpy = "^1.26.4"
-ruff = "^0.2.1"
 structlog = "^24.1.0"
-matplotlib = "^3.8.2"
 scikit-learn = "^1.4.0"
 
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.2.1"
+matplotlib = "^3.8.2"
+ipykernel = "^6.29.2"
+pytest = "^8.0.0"
+importlib = "^1.0.4"
 
 [build-system]
 requires = ["poetry-core"]
