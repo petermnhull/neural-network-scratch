@@ -16,7 +16,7 @@ def test_train():
 
     inputs = [np.random.rand(input_layer) for _ in range(20)]
     labels = [randint(0, 1) for _ in range(20)]
-    train = [Sample(image=x, label=label) for (x, label) in zip(inputs, labels)]
+    train = [Sample(values=x, label=label) for (x, label) in zip(inputs, labels)]
 
     epochs = 3
     accuracies = network.train(

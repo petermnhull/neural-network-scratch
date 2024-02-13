@@ -92,7 +92,7 @@ class Network:
         predictions = []
         labels = []
         for sample in test_samples:
-            predicted = self.predict(sample.image.flatten())
+            predicted = self.predict(sample.values)
             labels += [sample.label]
             predictions += [predicted]
 
@@ -104,29 +104,31 @@ class Network:
         nabla_w_total = [np.zeros(w.shape) for w in self._weights]
 
         for sample in batch:
-            x = sample.image.flatten()
+            x = sample.values
 
             zs, activations = self._forward_propagation(x)
             activations = [x] + activations
 
-            last_position = -1
+            end_position = -1
 
             delta = output_error(
-                activations[last_position],
+                activations[end_position],
                 label_one_hot_encoded(sample.label, self._number_classes),
-                zs[last_position],
+                zs[end_position],
             )
-            nabla_b_total[last_position] += delta
-            nabla_w_total[last_position] += np.outer(delta, activations[last_position - 1])
+            nabla_b_total[end_position] += delta
+            nabla_w_total[end_position] += np.outer(delta, activations[end_position - 1])
 
-            for i in range(len(self._layer_sizes) - 2):
-                delta = np.matmul(self._weights[last_position - i].T, delta) * sigmoid_deriv(
-                    zs[last_position - 1 - i]
+            for i in range(1, len(self._layer_sizes) - 1):
+                current_position = end_position - i
+
+                delta = np.matmul(self._weights[current_position + 1].T, delta) * sigmoid_deriv(
+                    zs[current_position]
                 )
 
-                nabla_b_total[last_position - 1 - i] += delta
-                nabla_w_total[last_position - 1 - i] += np.outer(
-                    delta, activations[last_position - 2 - i]
+                nabla_b_total[current_position] += delta
+                nabla_w_total[current_position] += np.outer(
+                    delta, activations[current_position - 1]
                 )
 
         for i in range(len(self._weights)):

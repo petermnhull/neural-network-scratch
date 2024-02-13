@@ -4,5 +4,5 @@ import numpy as np
 
 @dataclass
 class Sample:
-    image: np.array
+    values: np.array
     label: int
